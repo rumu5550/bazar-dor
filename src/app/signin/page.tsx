@@ -37,6 +37,28 @@ export default function SignInPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch {
+      setError("Google দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+    }
+  };
+
+  const handleGitHubSignIn = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+    } catch {
+      setError("GitHub দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center px-4 py-12">
       <div className="text-center mb-8">
@@ -101,6 +123,7 @@ export default function SignInPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
             type="button"
+            onClick={handleGoogleSignIn}
             className="flex items-center justify-center gap-2 h-11 px-3 border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 rounded-xl text-xs sm:text-[13px] font-semibold text-gray-800 transition-colors shadow-none cursor-pointer"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -126,6 +149,7 @@ export default function SignInPage() {
 
           <button
             type="button"
+            onClick={handleGitHubSignIn}
             className="flex items-center justify-center gap-2 h-11 px-3 border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 rounded-xl text-xs sm:text-[13px] font-semibold text-gray-800 transition-colors shadow-none cursor-pointer"
           >
             <svg className="w-4 h-4 fill-current text-gray-900" viewBox="0 0 24 24">
