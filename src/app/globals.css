@@ -3,7 +3,7 @@
 :root {
   --primary: #05893e;
   --primary-hover: #047234;
-  --background: #fbfcfb;
+  --background: #f0f5f0;
   --foreground: #1c2520;
 }
 
@@ -16,7 +16,7 @@
 
 body {
   font-family: var(--font-hind-siliguri), sans-serif;
-  background-color: var(--background);
+  background-color: #f0f5f0;
   color: var(--foreground);
 }
 

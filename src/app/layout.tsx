@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="bn" className={`${hindSiliguri.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-sans bg-[#fbfcfb] text-[#1a1a1a]">
+      <body className="min-h-full flex flex-col font-sans bg-[#f0f5f0] text-[#1a1a1a]">
         <Navbar />
         {children}
       </body>
