@@ -1,15 +1,40 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, Input } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (res.error) {
+        setError(res.error.message || "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে");
+      } else {
+        router.push("/");
+        router.refresh();
+      }
+    } catch {
+      setError("লগইন করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,6 +50,12 @@ export default function SignInPage() {
 
       <div className="w-full max-w-[460px] bg-white rounded-3xl p-6 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-gray-100">
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          {error && (
+            <div className="p-3 rounded-xl bg-red-50 text-red-600 text-xs sm:text-sm font-semibold">
+              {error}
+            </div>
+          )}
+
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-bold text-gray-800">ইমেইল</label>
             <Input
@@ -32,6 +63,7 @@ export default function SignInPage() {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
               className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:outline-none focus:border-[#05893e] text-sm text-gray-800 placeholder:text-gray-400 bg-white transition-colors"
             />
           </div>
@@ -43,15 +75,17 @@ export default function SignInPage() {
               placeholder="কমপক্ষে ৮ অক্ষর"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
               className="w-full h-12 px-4 rounded-xl border border-gray-200 focus:outline-none focus:border-[#05893e] text-sm text-gray-800 placeholder:text-gray-400 bg-white transition-colors"
             />
           </div>
 
           <Button
             type="submit"
+            isDisabled={loading}
             className="w-full h-12 mt-1 bg-[#05893e] hover:bg-[#047234] text-white font-bold text-base rounded-xl shadow-sm hover:shadow transition-all cursor-pointer flex items-center justify-center"
           >
-            সাইন ইন
+            {loading ? "লোড হচ্ছে..." : "সাইন ইন"}
           </Button>
         </form>
 
