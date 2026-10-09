@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Hind_Siliguri } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
@@ -14,8 +16,6 @@ export const metadata: Metadata = {
   description: "বাজার দর - প্রতিদিনের কাঁচাবাজার ও নিত্যপণ্যের হালনাগাদ দরদাম",
 };
 
-import Navbar from "@/components/shared/Navbar";
-
 export default function RootLayout({
   children,
 }: {
@@ -26,6 +26,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans bg-[#f0f5f0] text-[#1a1a1a]">
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

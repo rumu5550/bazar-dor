@@ -16,7 +16,7 @@
 
 body {
   font-family: var(--font-hind-siliguri), sans-serif;
-  background-color: #f0f5f0;
+  background-color: #f0f5f0 !important;
   color: var(--foreground);
 }
 
