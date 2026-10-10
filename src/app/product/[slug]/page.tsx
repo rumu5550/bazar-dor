@@ -210,29 +210,34 @@ export default async function ProductDetailsPage({ params }: PageProps) {
                       <th className="py-3.5 px-5 sm:px-6 text-right">গড়</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 text-xs sm:text-sm">
+                  <tbody className="divide-y divide-[#e3ece4] text-xs sm:text-sm">
                     {markets.map((m, idx) => {
                       const avg = (m.min + m.max) / 2;
                       const avgFormatted = Number.isInteger(avg)
                         ? toBengaliNumber(avg)
                         : toBengaliNumber(avg.toFixed(2));
+                      const isAlternate = idx % 2 === 1;
 
                       return (
                         <tr
                           key={idx}
-                          className="hover:bg-gray-50/60 transition-colors text-gray-800"
+                          className={`transition-colors text-gray-800 ${
+                            isAlternate
+                              ? "bg-[#eef6ef] hover:bg-[#e6f1e8]"
+                              : "bg-white hover:bg-gray-50/70"
+                          }`}
                         >
-                          <td className="py-3.5 px-5 sm:px-6 font-semibold text-gray-900">
+                          <td className="py-4 px-5 sm:px-6 font-semibold text-gray-900">
                             {m.market}
                           </td>
-                          <td className="py-3.5 px-5 sm:px-6 text-gray-600">{m.division}</td>
-                          <td className="py-3.5 px-5 sm:px-6  text-gray-800">
+                          <td className="py-4 px-5 sm:px-6 text-gray-600">{m.division}</td>
+                          <td className="py-4 px-5 sm:px-6 text-gray-800">
                             {toBengaliNumber(m.min)} টাকা
                           </td>
-                          <td className="py-3.5 px-5 sm:px-6  text-gray-800">
+                          <td className="py-4 px-5 sm:px-6 text-gray-800">
                             {toBengaliNumber(m.max)} টাকা
                           </td>
-                          <td className="py-3.5 px-5 sm:px-6 text-right font-bold text-gray-900">
+                          <td className="py-4 px-5 sm:px-6 text-right font-bold text-gray-900">
                             {avgFormatted} টাকা
                           </td>
                         </tr>

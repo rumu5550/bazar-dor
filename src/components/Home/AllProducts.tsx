@@ -187,7 +187,22 @@ export default function AllProducts() {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-36 rounded-2xl bg-white/60 animate-pulse" />
+            <div
+              key={i}
+              className="bg-white rounded-2xl p-4 sm:p-5 border border-transparent shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between h-40 animate-pulse"
+            >
+              <div className="flex items-center gap-3.5 mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-gray-100 shrink-0" />
+                <div className="flex flex-col gap-2 w-32">
+                  <div className="h-4 bg-gray-100 rounded w-full" />
+                  <div className="h-3 bg-gray-100 rounded w-2/3" />
+                </div>
+              </div>
+              <div className="flex items-end justify-between pt-2 border-t border-gray-50">
+                <div className="h-6 bg-gray-100 rounded w-20" />
+                <div className="h-6 bg-gray-100 rounded-full w-14" />
+              </div>
+            </div>
           ))}
         </div>
       ) : sortedProducts.length === 0 ? (

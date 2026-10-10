@@ -26,9 +26,9 @@ export default function HeroBanner() {
   };
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6">
-      <div className="relative overflow-hidden rounded-3xl bg-white border border-[#eef3ee] px-6 sm:px-10 md:px-12 lg:px-14 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-        <div className="flex-1 max-w-2xl text-left">
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <div className="relative overflow-hidden rounded-3xl bg-white border border-[#eef3ee] px-6 py-8 sm:py-10 sm:px-10 md:px-12 lg:px-14 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+        <div className="flex-1 max-w-2xl text-left w-full">
           <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#ebf7ee] text-[#05893e] text-xs sm:text-sm font-semibold mb-4 sm:mb-5">
             {formattedDate}
           </div>

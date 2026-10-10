@@ -28,8 +28,30 @@ export default function PriceHighlights() {
 
   if (loading) {
     return (
-      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        <div className="h-48 rounded-2xl bg-white/60 animate-pulse" />
+      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col gap-10">
+        <div className="flex flex-col gap-4">
+          <div className="h-6 w-40 bg-gray-200/60 rounded-md animate-pulse" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl p-4 sm:p-5 h-40 animate-pulse border border-transparent shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between"
+              >
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-gray-100" />
+                  <div className="flex flex-col gap-2 w-32">
+                    <div className="h-4 bg-gray-100 rounded" />
+                    <div className="h-3 bg-gray-100 rounded w-20" />
+                  </div>
+                </div>
+                <div className="flex justify-between items-center pt-2">
+                  <div className="h-6 bg-gray-100 rounded w-20" />
+                  <div className="h-6 bg-gray-100 rounded-full w-14" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
     );
   }

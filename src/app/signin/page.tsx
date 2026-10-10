@@ -30,8 +30,10 @@ function SignInForm() {
       const msg = "সোশ্যাল লগইন সম্পন্ন করা যায়নি। আবার চেষ্টা করুন।";
       setError(msg);
       toast.error(msg);
+    } else if (callbackUrl && callbackUrl !== "/" && !session?.user) {
+      toast.warning("এই পাতাটি দেখতে প্রথমে লগইন করুন");
     }
-  }, [searchParams]);
+  }, [searchParams, callbackUrl, session?.user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
