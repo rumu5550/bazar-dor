@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Category } from "@/types";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 function CategoryNavList({ categories }: { categories: Category[] }) {
   const searchParams = useSearchParams();
@@ -41,6 +42,18 @@ export default function Navbar() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const previousUserRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (session?.user?.id && !previousUserRef.current) {
+      const justLoggedIn = sessionStorage.getItem("just_logged_in");
+      if (justLoggedIn) {
+        sessionStorage.removeItem("just_logged_in");
+        toast.success(`স্বাগতম, ${session.user.name || "ইউজার"}! লগইন সফল হয়েছে।`);
+      }
+    }
+    previousUserRef.current = session?.user?.id || null;
+  }, [session]);
 
   useEffect(() => {
     const formatted = new Intl.DateTimeFormat("bn-BD", {
@@ -80,6 +93,7 @@ export default function Navbar() {
   const handleSignOut = async () => {
     setIsProfileOpen(false);
     await authClient.signOut();
+    toast.success("সফলভাবে লগআউট হয়েছে");
   };
 
   const user = session?.user;

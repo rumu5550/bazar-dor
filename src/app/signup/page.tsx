@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { Button, Input } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 function SignUpForm() {
   const router = useRouter();
@@ -22,8 +23,31 @@ function SignUpForm() {
     e.preventDefault();
     setError("");
 
+    if (!name.trim()) {
+      const msg = "দয়া করে আপনার নাম লিখুন";
+      setError(msg);
+      toast.error(msg);
+      return;
+    }
+
+    if (!email.trim()) {
+      const msg = "দয়া করে আপনার ইমেইল দিন";
+      setError(msg);
+      toast.error(msg);
+      return;
+    }
+
+    if (password.length < 8) {
+      const msg = "পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে";
+      setError(msg);
+      toast.error(msg);
+      return;
+    }
+
     if (password !== confirmPassword) {
-      setError("পাসওয়ার্ড দুটি মিলছে না");
+      const msg = "পাসওয়ার্ড দুটি মিলছে না";
+      setError(msg);
+      toast.error(msg);
       return;
     }
 
@@ -37,13 +61,18 @@ function SignUpForm() {
       });
 
       if (res.error) {
-        setError(res.error.message || "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে");
+        const msg = res.error.message || "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে";
+        setError(msg);
+        toast.error(msg);
       } else {
-        router.push(callbackUrl);
+        toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! অনুগ্রহ করে লগইন করুন।");
+        router.push(callbackUrl && callbackUrl !== "/" ? `/signin?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/signin");
         router.refresh();
       }
     } catch {
-      setError("অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+      const msg = "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -51,23 +80,41 @@ function SignUpForm() {
 
   const handleGoogleSignUp = async () => {
     try {
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("just_logged_in", "google");
+      }
+      toast.info("Google-এ রিডাইরেক্ট করা হচ্ছে...");
       await authClient.signIn.social({
         provider: "google",
         callbackURL: callbackUrl,
       });
     } catch {
-      setError("Google দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("just_logged_in");
+      }
+      const msg = "Google দিয়ে সাইন আপ করতে সমস্যা হয়েছে।";
+      setError(msg);
+      toast.error(msg);
     }
   };
 
   const handleGitHubSignUp = async () => {
     try {
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("just_logged_in", "github");
+      }
+      toast.info("GitHub-এ রিডাইরেক্ট করা হচ্ছে...");
       await authClient.signIn.social({
         provider: "github",
         callbackURL: callbackUrl,
       });
     } catch {
-      setError("GitHub দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("just_logged_in");
+      }
+      const msg = "GitHub দিয়ে সাইন আপ করতে সমস্যা হয়েছে।";
+      setError(msg);
+      toast.error(msg);
     }
   };
 
