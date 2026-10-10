@@ -11,11 +11,18 @@ function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const { data: session, isPending } = authClient.useSession();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!isPending && session?.user) {
+      router.replace("/");
+    }
+  }, [session, isPending, router]);
 
   useEffect(() => {
     const errorParam = searchParams.get("error");
@@ -109,6 +116,14 @@ function SignInForm() {
       toast.error(msg);
     }
   };
+
+  if (isPending || session?.user) {
+    return (
+      <div className="min-h-[calc(100vh-160px)] flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-[#05893e] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center px-4 py-12">
