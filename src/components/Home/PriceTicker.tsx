@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import { Product } from "@/types";
@@ -10,7 +11,7 @@ export default function PriceTicker() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://api.api-store.workers.dev/api/bazardor/products")
+    fetch("https://openapi.programming-hero.com/api/bazardor/products")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch");
         return res.json();
@@ -52,9 +53,10 @@ export default function PriceTicker() {
           const unitFormatted = formatUnitBn(product.unit);
 
           return (
-            <div
+            <Link
               key={`${product.id}-${idx}`}
-              className="flex items-center gap-2 px-4 sm:px-6 border-r border-gray-100 whitespace-nowrap text-xs sm:text-sm font-medium shrink-0 leading-normal"
+              href={`/product/${product.slug}`}
+              className="flex items-center gap-2 px-4 sm:px-6 border-r border-gray-100 whitespace-nowrap text-xs sm:text-sm font-medium shrink-0 leading-normal hover:text-[#05893e] transition-colors"
             >
               <span className="text-base sm:text-lg select-none leading-none">
                 {product.image || product.categoryIcon || "🛒"}
@@ -81,7 +83,7 @@ export default function PriceTicker() {
                   <span>০%</span>
                 </span>
               )}
-            </div>
+            </Link>
           );
         })}
       </Marquee>

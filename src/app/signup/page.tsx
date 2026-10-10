@@ -1,13 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { Button, Input } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 
-export default function SignUpPage() {
+function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +39,7 @@ export default function SignUpPage() {
       if (res.error) {
         setError(res.error.message || "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে");
       } else {
-        router.push("/");
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch {
@@ -50,7 +53,7 @@ export default function SignUpPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: callbackUrl,
       });
     } catch {
       setError("Google দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
@@ -61,7 +64,7 @@ export default function SignUpPage() {
     try {
       await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/",
+        callbackURL: callbackUrl,
       });
     } catch {
       setError("GitHub দিয়ে সাইন আপ করতে সমস্যা হয়েছে।");
@@ -218,5 +221,13 @@ export default function SignUpPage() {
         ← হোম পেজে ফিরে যান
       </Link>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f0f5f0]" />}>
+      <SignUpForm />
+    </Suspense>
   );
 }

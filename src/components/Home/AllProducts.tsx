@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Product } from "@/types";
@@ -20,8 +21,8 @@ export default function AllProducts() {
   useEffect(() => {
     setLoading(true);
     const url = categoryParam
-      ? `https://api.api-store.workers.dev/api/bazardor/products?category=${categoryParam}`
-      : "https://api.api-store.workers.dev/api/bazardor/products";
+      ? `https://openapi.programming-hero.com/api/bazardor/products?category=${categoryParam}`
+      : "https://openapi.programming-hero.com/api/bazardor/products";
 
     fetch(url)
       .then((res) => {
@@ -70,16 +71,17 @@ export default function AllProducts() {
     const unitFormatted = formatUnitBn(product.unit);
 
     return (
-      <div
+      <Link
         key={product.id}
-        className="bg-white rounded-2xl p-4 sm:p-5 border border-transparent hover:border-[#05893e] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer"
+        href={`/product/${product.slug}`}
+        className="bg-white rounded-2xl p-4 sm:p-5 border border-transparent hover:border-[#05893e] shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group"
       >
         <div className="flex items-center gap-3.5 mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#f7f9f7] flex items-center justify-center text-2xl select-none shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#f7f9f7] flex items-center justify-center text-2xl select-none shrink-0 group-hover:scale-105 transition-transform">
             {product.image || product.categoryIcon || "🛒"}
           </div>
           <div className="flex flex-col min-w-0">
-            <h4 className="text-base sm:text-lg font-bold text-gray-900 truncate">
+            <h4 className="text-base sm:text-lg font-bold text-gray-900 truncate group-hover:text-[#05893e] transition-colors">
               {product.nameBn}
             </h4>
             <span className="text-xs sm:text-[13px] text-gray-500 font-medium">
@@ -111,7 +113,7 @@ export default function AllProducts() {
             <span>{pctFormatted}%</span>
           </div>
         </div>
-      </div>
+      </Link>
     );
   };
 

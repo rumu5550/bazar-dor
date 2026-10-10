@@ -49,7 +49,7 @@ export default function Navbar() {
     }).format(new Date());
     setFormattedDate(formatted);
 
-    fetch("https://api.api-store.workers.dev/api/bazardor/categories")
+    fetch("https://openapi.programming-hero.com/api/bazardor/categories")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch categories");
         return res.json();

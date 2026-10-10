@@ -1,13 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { Button, Input } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +30,7 @@ export default function SignInPage() {
       if (res.error) {
         setError(res.error.message || "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে");
       } else {
-        router.push("/");
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch {
@@ -41,7 +44,7 @@ export default function SignInPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: callbackUrl,
       });
     } catch {
       setError("Google দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
@@ -52,7 +55,7 @@ export default function SignInPage() {
     try {
       await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/",
+        callbackURL: callbackUrl,
       });
     } catch {
       setError("GitHub দিয়ে সাইন ইন করতে সমস্যা হয়েছে।");
@@ -181,5 +184,13 @@ export default function SignInPage() {
         ← হোম পেজে ফিরে যান
       </Link>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f0f5f0]" />}>
+      <SignInForm />
+    </Suspense>
   );
 }
