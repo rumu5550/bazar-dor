@@ -1,19 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Category } from "@/types";
 import { authClient } from "@/lib/auth-client";
 
 function CategoryNavList({ categories }: { categories: Category[] }) {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const activeCategory = searchParams.get("category");
 
   return (
     <nav className="flex items-center gap-2 sm:gap-3 overflow-x-auto py-2.5 sm:py-3 no-scrollbar">
       {categories.map((cat) => {
-        const isActive = activeCategory === cat.slug;
+        const isActive =
+          activeCategory === cat.slug || pathname === `/category/${cat.slug}`;
         return (
           <Link
             key={cat.id}
